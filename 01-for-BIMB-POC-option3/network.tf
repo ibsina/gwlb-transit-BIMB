@@ -1,11 +1,3 @@
-// Creating Internet Gateway
-resource "aws_internet_gateway" "fgtvmigw" {
-  vpc_id = aws_vpc.fgtvm-vpc.id
-  tags = {
-    Name = "fgtvm-igw"
-  }
-}
-
 // FGT VPC Route Table
 resource "aws_route_table" "fgtvmmgmtrt" {
   vpc_id = aws_vpc.fgtvm-vpc.id
@@ -40,12 +32,6 @@ resource "aws_route_table" "fgtvmgwlbrt" {
 }
 
 # FGT VPC Route
-resource "aws_route" "externalroute" {
-  route_table_id         = aws_route_table.fgtvmmgmtrt.id
-  destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.fgtvmigw.id
-}
-
 resource "aws_route" "tgwyroute" {
   depends_on             = [aws_instance.fgtvm]
   route_table_id         = aws_route_table.fgtvmtgwrt.id
