@@ -30,3 +30,13 @@ output "LoadBalancerPrivateIP3" {
 output "FGTVPC" {
   value = aws_vpc.fgtvm-vpc.id
 }
+
+output "SSH_KeyPair_Name" {
+  description = "Name of the AWS EC2 Key Pair"
+  value       = aws_key_pair.ec2_key_pair.key_name
+}
+
+output "SSH_PrivateKey_SecretARN" {
+  description = "AWS Secrets Manager ARN storing the private key (use this to retrieve the key)"
+  value       = aws_secretsmanager_secret.ec2_ssh_private_key.arn
+}
