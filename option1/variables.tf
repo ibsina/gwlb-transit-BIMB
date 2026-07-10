@@ -3,20 +3,20 @@ variable "access_key" {}
 variable "secret_key" {}
 
 variable "region" {
-  default = "ap-southeast-5"
+  default = "ap-southeast-1"
 }
 
 // Availability zones for the region
 variable "az1" {
-  default = "ap-southeast-5a"
+  default = "ap-southeast-1a"
 }
 
 variable "az2" {
-  default = "ap-southeast-5b"
+  default = "ap-southeast-1b"
 }
 
 variable "az3" {
-  default = "ap-southeast-5c"
+  default = "ap-southeast-1c"
 }
 
 // VPC for FortiGate Security VPC
