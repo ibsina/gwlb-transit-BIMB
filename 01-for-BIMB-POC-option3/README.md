@@ -35,9 +35,9 @@ The Terraform execution role must include the following in addition to standard 
 Terraform deploys the following components:
 * 1 AWS VPC (`172.21.168.0/24`)
   - FGT Security VPC with 1 management, 1 private, 1 gwlb, and 1 transit gateway subnet per AZ across three AZs.
-      - 1 Internet Gateway
+      - **No Internet Gateway** — all management access is via Transit Gateway / Direct Connect / VPN.
+      - 1 Route table for management subnets (no default route — fully private).
       - 1 Route table with private subnet association.
-      - 1 Route table with management subnet association, 1 default route with target to Internet Gateway.
       - 1 Route table with gwlb subnet association.
       - 1 Route table with transit gateway subnet association, and 1 default route with target to Gateway Load Balancer Endpoint.
   - Three FortiGate-VM instances with 2 NICs each: port1 on management subnet and port2 on private subnet, one instance per AZ.
