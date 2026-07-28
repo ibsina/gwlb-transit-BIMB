@@ -43,8 +43,6 @@ data "cloudinit_config" "config_ns1" {
     content_type = "text/x-shellscript"
     content = templatefile("${var.bootstrap-fgtvm-ns1}", {
       adminsport = "${var.adminsport}"
-      cidr       = "${var.ns_privatecidraz2}"
-      gateway    = cidrhost(var.ns_privatecidraz1, 1)
     })
   }
 }

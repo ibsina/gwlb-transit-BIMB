@@ -330,10 +330,10 @@ resource "aws_vpc_endpoint_service" "ew_gwlbservice" {
   }
 }
 
-// EW GWLB Endpoint
+// EW GWLB Endpoints (one per AZ for cross-AZ support)
 resource "aws_vpc_endpoint" "ew_gwlbendpoint" {
   service_name      = aws_vpc_endpoint_service.ew_gwlbservice.service_name
-  subnet_ids        = [aws_subnet.ew_gwlbsubnetaz1.id]
+  subnet_ids        = [aws_subnet.ew_gwlbsubnetaz1.id, aws_subnet.ew_gwlbsubnetaz2.id]
   vpc_endpoint_type = aws_vpc_endpoint_service.ew_gwlbservice.service_type
   vpc_id            = aws_vpc.fgtvm-vpc.id
   

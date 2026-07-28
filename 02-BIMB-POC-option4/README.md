@@ -190,15 +190,21 @@ After successful deployment, the following outputs are available:
 
 #### North-South Cluster (NS1 & NS2):
 - Multi-VDOM mode enabled
-- No GENEVE tunnel (direct GWLB attachment)
-- Basic firewall policy allowing all traffic
+- No GENEVE tunnel (direct GWLB attachment without endpoints)
+- Simple firewall policy on port2 allowing all traffic
 - Health probe response enabled on port2
+- Used for internet-bound traffic inspection
 
 #### East-West Cluster (EW1 & EW2):
 - Multi-VDOM mode enabled
-- GENEVE tunnel configured for GWLB endpoint communication
-- Firewall policy on GENEVE interface
+- **Cross-AZ GENEVE configuration**: Each FortiGate has 2 GENEVE tunnels (one per AZ endpoint)
+  - `awsgeneve`: Tunnel to AZ1 GWLB endpoint
+  - `awsgeneve2`: Tunnel to AZ2 GWLB endpoint
+- Zone configuration (`awszone`) containing both GENEVE interfaces
+- Firewall policy on zone interface allowing all traffic
+- Policy-based routing for symmetric traffic flow
 - Static routes for traffic steering
+- Used for inter-VPC/on-premises traffic inspection
 
 ### Security
 
@@ -246,6 +252,8 @@ Type `yes` to confirm deletion.
 3. **High Availability**: This configuration provides AZ-level redundancy
 4. **Instance Type**: Default is c6g.xlarge (ARM). Change if using x86 instances
 5. **Cluster Independence**: NS and EW clusters operate independently with separate GWLBs
+6. **Cross-AZ GWLB Pattern**: EW cluster uses cross-AZ GENEVE configuration where each FortiGate maintains tunnels to both AZ endpoints for symmetric traffic flow and resilience
+7. **GWLB Endpoint Integration**: Only the EW cluster has GWLB endpoints for TGW attachment. NS cluster uses direct GWLB attachment without endpoints
 
 ## Troubleshooting
 
@@ -260,9 +268,11 @@ Type `yes` to confirm deletion.
 - Review FortiGate system logs
 
 ### GENEVE Tunnel Not Establishing (EW Cluster)
-- Verify GWLB endpoint is created
-- Check endpoint IP in FortiGate configuration
-- Review FortiGate GENEVE interface status
+- Verify GWLB endpoints are created in BOTH AZs
+- Check both endpoint IPs in FortiGate configuration (awsgeneve and awsgeneve2)
+- Review FortiGate GENEVE interface status: `diagnose sys geneve list`
+- Verify zone configuration includes both GENEVE interfaces
+- Check policy-based routing configuration
 
 ## Support
 

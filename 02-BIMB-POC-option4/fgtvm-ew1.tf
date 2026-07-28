@@ -63,10 +63,11 @@ data "cloudinit_config" "config_ew1" {
     filename     = "config"
     content_type = "text/x-shellscript"
     content = templatefile("${var.bootstrap-fgtvm-ew1}", {
-      adminsport = "${var.adminsport}"
-      cidr       = "${var.ew_privatecidraz2}"
-      gateway    = cidrhost(var.ew_privatecidraz1, 1)
-      endpointip = "${data.aws_network_interface.ew_vpcendpointip_az1.private_ip}"
+      adminsport  = "${var.adminsport}"
+      dst         = var.ew_privatecidraz2
+      gateway     = cidrhost(var.ew_privatecidraz1, 1)
+      endpointip  = "${data.aws_network_interface.ew_vpcendpointip_az1.private_ip}"
+      endpointip2 = "${data.aws_network_interface.ew_vpcendpointip_az2.private_ip}"
     })
   }
 }
