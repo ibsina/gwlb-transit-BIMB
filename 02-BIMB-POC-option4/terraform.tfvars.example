@@ -1,0 +1,64 @@
+# AWS Credentials
+access_key = "YOUR_AWS_ACCESS_KEY"
+secret_key = "YOUR_AWS_SECRET_KEY"
+
+# AWS Region Configuration
+region = "ap-southeast-1"
+az1    = "ap-southeast-1a"
+az2    = "ap-southeast-1b"
+
+# VPC Configuration
+vpccidr = "172.21.168.0/24"
+
+# North-South Cluster Subnets
+ns_mgmtcidraz1    = "172.21.168.0/28"
+ns_privatecidraz1 = "172.21.168.16/28"
+ns_mgmtcidraz2    = "172.21.168.32/28"
+ns_privatecidraz2 = "172.21.168.48/28"
+
+# East-West Cluster Subnets
+ew_mgmtcidraz1    = "172.21.168.64/28"
+ew_privatecidraz1 = "172.21.168.80/28"
+ew_attachcidraz1  = "172.21.168.96/28"
+ew_gwlbcidraz1    = "172.21.168.112/28"
+ew_mgmtcidraz2    = "172.21.168.128/28"
+ew_privatecidraz2 = "172.21.168.144/28"
+ew_attachcidraz2  = "172.21.168.160/28"
+ew_gwlbcidraz2    = "172.21.168.176/28"
+
+# FortiGate Configuration
+arch         = "arm"         # Options: arm, x86
+size         = "c6g.xlarge"  # Instance type (must match arch)
+license_type = "payg"        # Options: payg, byol
+license_format = "file"      # Options: file, token
+
+# S3 Bootstrap
+bucket = false  # Set to true to use S3 bucket for bootstrap
+
+# License Files (if using BYOL)
+licenses = [
+  "license-ns1.lic",
+  "license-ns2.lic",
+  "license-ew1.lic",
+  "license-ew2.lic"
+]
+
+# Bootstrap Configuration Files
+bootstrap-fgtvm-ns1 = "fgtvm-ns1.conf"
+bootstrap-fgtvm-ns2 = "fgtvm-ns2.conf"
+bootstrap-fgtvm-ew1 = "fgtvm-ew1.conf"
+bootstrap-fgtvm-ew2 = "fgtvm-ew2.conf"
+
+# Admin Port
+adminsport = "443"
+
+# Project Configuration
+project_name = "bimb-fgtvm-opt4"
+environment  = "prod"
+
+# Common Tags
+common_tags = {
+  Project     = "bimb-fgtvm-option4"
+  Environment = "prod"
+  ManagedBy   = "Terraform"
+}
