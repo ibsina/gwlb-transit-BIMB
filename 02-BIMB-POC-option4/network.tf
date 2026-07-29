@@ -32,10 +32,19 @@ resource "aws_route_table" "ew_privatert" {
   }
 }
 
-resource "aws_route_table" "ew_tgwrt" {
+resource "aws_route_table" "ew_tgwrt_az1" {
   vpc_id = aws_vpc.fgtvm-vpc.id
+
   tags = {
-    Name = "ew-tgw-rt"
+    Name = "ew-tgw-rt-az1"
+  }
+}
+
+resource "aws_route_table" "ew_tgwrt_az2" {
+  vpc_id = aws_vpc.fgtvm-vpc.id
+
+  tags = {
+    Name = "ew-tgw-rt-az2"
   }
 }
 
@@ -47,11 +56,17 @@ resource "aws_route_table" "ew_gwlbrt" {
 }
 
 // EW TGW Route to GWLB Endpoint
-resource "aws_route" "ew_tgwyroute" {
-  depends_on             = [aws_instance.fgtvm_ew1]
-  route_table_id         = aws_route_table.ew_tgwrt.id
+
+resource "aws_route" "ew_tgwroute_az1" {
+  route_table_id         = aws_route_table.ew_tgwrt_az1.id
   destination_cidr_block = "0.0.0.0/0"
-  vpc_endpoint_id        = aws_vpc_endpoint.ew_gwlbendpoint.id
+  vpc_endpoint_id        = aws_vpc_endpoint.ew_gwlbendpoint_az1.id
+}
+
+resource "aws_route" "ew_tgwroute_az2" {
+  route_table_id         = aws_route_table.ew_tgwrt_az2.id
+  destination_cidr_block = "0.0.0.0/0"
+  vpc_endpoint_id        = aws_vpc_endpoint.ew_gwlbendpoint_az2.id
 }
 
 // ========================================
@@ -104,12 +119,12 @@ resource "aws_route_table_association" "ew_private_az2" {
 
 resource "aws_route_table_association" "ew_tgw_az1" {
   subnet_id      = aws_subnet.ew_transitsubnetaz1.id
-  route_table_id = aws_route_table.ew_tgwrt.id
+  route_table_id = aws_route_table.ew_tgwrt_az1.id
 }
 
 resource "aws_route_table_association" "ew_tgw_az2" {
   subnet_id      = aws_subnet.ew_transitsubnetaz2.id
-  route_table_id = aws_route_table.ew_tgwrt.id
+  route_table_id = aws_route_table.ew_tgwrt_az2.id
 }
 
 resource "aws_route_table_association" "ew_gwlb_az1" {
@@ -330,14 +345,28 @@ resource "aws_vpc_endpoint_service" "ew_gwlbservice" {
   }
 }
 
-// EW GWLB Endpoints (one per AZ for cross-AZ support)
-resource "aws_vpc_endpoint" "ew_gwlbendpoint" {
+//EW GWLB Endpoints (one per AZ for cross-AZ support)
+
+# GWLB endpoint in AZ1
+resource "aws_vpc_endpoint" "ew_gwlbendpoint_az1" {
   service_name      = aws_vpc_endpoint_service.ew_gwlbservice.service_name
-  subnet_ids        = [aws_subnet.ew_gwlbsubnetaz1.id, aws_subnet.ew_gwlbsubnetaz2.id]
-  vpc_endpoint_type = aws_vpc_endpoint_service.ew_gwlbservice.service_type
+  subnet_ids        = [aws_subnet.ew_gwlbsubnetaz1.id]
+  vpc_endpoint_type = "GatewayLoadBalancer"
   vpc_id            = aws_vpc.fgtvm-vpc.id
-  
+
   tags = {
-    Name = "EW-GWLB-Endpoint"
+    Name = "EW-GWLB-Endpoint-AZ1"
+  }
+}
+
+# GWLB endpoint in AZ2
+resource "aws_vpc_endpoint" "ew_gwlbendpoint_az2" {
+  service_name      = aws_vpc_endpoint_service.ew_gwlbservice.service_name
+  subnet_ids        = [aws_subnet.ew_gwlbsubnetaz2.id]
+  vpc_endpoint_type = "GatewayLoadBalancer"
+  vpc_id            = aws_vpc.fgtvm-vpc.id
+
+  tags = {
+    Name = "EW-GWLB-Endpoint-AZ2"
   }
 }
