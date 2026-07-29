@@ -35,13 +35,6 @@ license_format = "file"      # Options: file, token
 # S3 Bootstrap
 bucket = false  # Set to true to use S3 bucket for bootstrap
 
-# License Files (if using BYOL)
-licenses = [
-  "license-ns1.lic",
-  "license-ns2.lic",
-  "license-ew1.lic",
-  "license-ew2.lic"
-]
 
 # Bootstrap Configuration Files
 bootstrap-fgtvm-ns1 = "fgtvm-ns1.conf"
