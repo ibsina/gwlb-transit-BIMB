@@ -180,5 +180,5 @@ variable "bootstrap-fgtvm-ew2" {
 variable "licenses" {
   // Change to your own byol license files
   type    = list(string)
-  default = ["license-ns1.lic", "license-ns2.lic", "license-ew1.lic", "license-ew2.lic"]
+  default = ["FGVM02TM24014961.lic", "FGVM02TM24014962.lic", "FGVM08TM25004005.lic", "FGVM08TM25004007.lic"]
 }
