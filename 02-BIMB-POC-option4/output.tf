@@ -68,9 +68,14 @@ output "EW-GWLB-Service-Name" {
   value       = aws_vpc_endpoint_service.ew_gwlbservice.service_name
 }
 
-output "EW-GWLB-Endpoint-ID" {
-  description = "East-West GWLB Endpoint ID"
-  value       = aws_vpc_endpoint.ew_gwlbendpoint.id
+output "EW-GWLB-Endpoint-ID-AZ1" {
+  description = "East-West GWLB Endpoint ID (AZ1)"
+  value       = aws_vpc_endpoint.ew_gwlbendpoint_az1.id
+}
+
+output "EW-GWLB-Endpoint-ID-AZ2" {
+  description = "East-West GWLB Endpoint ID (AZ2)"
+  value       = aws_vpc_endpoint.ew_gwlbendpoint_az2.id
 }
 
 output "EW-LoadBalancer-PrivateIP-AZ1" {

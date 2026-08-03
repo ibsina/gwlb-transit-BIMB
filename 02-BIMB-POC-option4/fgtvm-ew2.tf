@@ -17,7 +17,7 @@ data "aws_network_interface" "ew2_eth1" {
 
 // Get GWLB Endpoint IP for EW Cluster AZ2
 data "aws_network_interface" "ew_vpcendpointip_az2" {
-  depends_on = [aws_vpc_endpoint.ew_gwlbendpoint]
+  depends_on = [aws_vpc_endpoint.ew_gwlbendpoint_az2]
   filter {
     name   = "vpc-id"
     values = ["${aws_vpc.fgtvm-vpc.id}"]
