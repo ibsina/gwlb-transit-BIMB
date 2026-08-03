@@ -274,6 +274,32 @@ resource "aws_vpc_endpoint_service" "ns_gwlbservice" {
   }
 }
 
+//NS GWLB Endpoints (one per AZ)
+
+# GWLB endpoint in AZ1
+resource "aws_vpc_endpoint" "ns_gwlbendpoint_az1" {
+  service_name      = aws_vpc_endpoint_service.ns_gwlbservice.service_name
+  subnet_ids        = [aws_subnet.ns_privatesubnetaz1.id]
+  vpc_endpoint_type = "GatewayLoadBalancer"
+  vpc_id            = aws_vpc.fgtvm-vpc.id
+
+  tags = {
+    Name = "NS-GWLB-Endpoint-AZ1"
+  }
+}
+
+# GWLB endpoint in AZ2
+resource "aws_vpc_endpoint" "ns_gwlbendpoint_az2" {
+  service_name      = aws_vpc_endpoint_service.ns_gwlbservice.service_name
+  subnet_ids        = [aws_subnet.ns_privatesubnetaz2.id]
+  vpc_endpoint_type = "GatewayLoadBalancer"
+  vpc_id            = aws_vpc.fgtvm-vpc.id
+
+  tags = {
+    Name = "NS-GWLB-Endpoint-AZ2"
+  }
+}
+
 // ========================================
 // East-West Gateway Load Balancer (WITH Endpoint)
 // ========================================

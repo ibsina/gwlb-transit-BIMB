@@ -15,6 +15,11 @@ data "aws_network_interface" "ns1_eth1" {
   id = aws_network_interface.ns1_eth1.id
 }
 
+// Get GWLB Endpoint IP for NS Cluster AZ1
+data "aws_network_interface" "ns_vpcendpointip_az1" {
+  id = tolist(aws_vpc_endpoint.ns_gwlbendpoint_az1.network_interface_ids)[0]
+}
+
 resource "aws_network_interface_sg_attachment" "ns1_public_attachment" {
   depends_on           = [aws_network_interface.ns1_eth0]
   security_group_id    = aws_security_group.public_allow.id
@@ -42,7 +47,11 @@ data "cloudinit_config" "config_ns1" {
     filename     = "config"
     content_type = "text/x-shellscript"
     content = templatefile("${var.bootstrap-fgtvm-ns1}", {
-      adminsport = "${var.adminsport}"
+      adminsport  = "${var.adminsport}"
+      dst         = var.ns_privatecidraz2
+      gateway     = cidrhost(var.ns_privatecidraz1, 1)
+      endpointip  = "${data.aws_network_interface.ns_vpcendpointip_az1.private_ip}"
+      endpointip2 = "${data.aws_network_interface.ns_vpcendpointip_az2.private_ip}"
     })
   }
 }
