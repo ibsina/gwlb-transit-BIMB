@@ -17,27 +17,7 @@ data "aws_network_interface" "ew1_eth1" {
 
 // Get GWLB Endpoint IP for EW Cluster AZ1
 data "aws_network_interface" "ew_vpcendpointip_az1" {
-  depends_on = [aws_vpc_endpoint.ew_gwlbendpoint_az1]
-  filter {
-    name   = "vpc-id"
-    values = ["${aws_vpc.fgtvm-vpc.id}"]
-  }
-  filter {
-    name   = "status"
-    values = ["in-use"]
-  }
-  filter {
-    name   = "description"
-    values = ["*ELB*"]
-  }
-  filter {
-    name   = "availability-zone"
-    values = ["${var.az1}"]
-  }
-  filter {
-    name   = "subnet-id"
-    values = ["${aws_subnet.ew_gwlbsubnetaz1.id}"]
-  }
+  id = tolist(aws_vpc_endpoint.ew_gwlbendpoint_az1.network_interface_ids)[0]
 }
 
 resource "aws_network_interface_sg_attachment" "ew1_public_attachment" {
