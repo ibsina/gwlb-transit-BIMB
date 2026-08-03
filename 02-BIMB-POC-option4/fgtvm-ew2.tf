@@ -34,6 +34,10 @@ data "aws_network_interface" "ew_vpcendpointip_az2" {
     name   = "availability-zone"
     values = ["${var.az2}"]
   }
+  filter {
+    name   = "subnet-id"
+    values = ["${aws_subnet.ew_gwlbsubnetaz2.id}"]
+  }
 }
 
 resource "aws_network_interface_sg_attachment" "ew2_public_attachment" {
