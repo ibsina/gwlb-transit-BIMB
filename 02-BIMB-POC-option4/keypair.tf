@@ -14,7 +14,7 @@ resource "aws_key_pair" "ec2_key_pair" {
 }
 
 resource "aws_secretsmanager_secret" "ec2_ssh_private_key" {
-  name                    = "bimb-${var.project_name}-keypair"
+  name_prefix             = "bimb-${var.project_name}-keypair-"
   description             = "Private SSH key for EC2 instance"
   recovery_window_in_days = 0
   tags = merge(
