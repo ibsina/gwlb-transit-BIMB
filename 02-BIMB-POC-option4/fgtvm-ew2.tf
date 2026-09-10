@@ -15,10 +15,7 @@ data "aws_network_interface" "ew2_eth1" {
   id = aws_network_interface.ew2_eth1.id
 }
 
-// Get GWLB Endpoint IP for EW Cluster AZ2
-data "aws_network_interface" "ew_vpcendpointip_az2" {
-  id = tolist(aws_vpc_endpoint.ew_gwlbendpoint_az2.network_interface_ids)[0]
-}
+
 
 resource "aws_network_interface_sg_attachment" "ew2_public_attachment" {
   depends_on           = [aws_network_interface.ew2_eth0]
@@ -50,8 +47,8 @@ data "cloudinit_config" "config_ew2" {
       adminsport  = "${var.adminsport}"
       dst         = var.ew_privatecidraz1
       gateway     = cidrhost(var.ew_privatecidraz2, 1)
-      endpointip  = "${data.aws_network_interface.ew_vpcendpointip_az1.private_ip}"
-      endpointip2 = "${data.aws_network_interface.ew_vpcendpointip_az2.private_ip}"
+      gwlbip  = data.aws_network_interface.ew_gwlb_ip_az1.private_ip
+      gwlbip2 = data.aws_network_interface.ew_gwlb_ip_az2.private_ip
     })
   }
 }

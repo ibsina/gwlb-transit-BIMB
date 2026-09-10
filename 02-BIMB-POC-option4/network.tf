@@ -396,3 +396,51 @@ resource "aws_vpc_endpoint" "ew_gwlbendpoint_az2" {
     Name = "EW-GWLB-Endpoint-AZ2"
   }
 }
+
+// Get NS GWLB IP in AZ1 (used as GENEVE remote-ip)
+data "aws_network_interface" "ns_gwlb_ip_az1" {
+  filter {
+    name   = "description"
+    values = ["ELB gwy/${aws_lb.ns_gateway_lb.name}/*"]
+  }
+  filter {
+    name   = "subnet-id"
+    values = [aws_subnet.ns_privatesubnetaz1.id]
+  }
+}
+
+// Get NS GWLB IP in AZ2 (used as GENEVE remote-ip)
+data "aws_network_interface" "ns_gwlb_ip_az2" {
+  filter {
+    name   = "description"
+    values = ["ELB gwy/${aws_lb.ns_gateway_lb.name}/*"]
+  }
+  filter {
+    name   = "subnet-id"
+    values = [aws_subnet.ns_privatesubnetaz2.id]
+  }
+}
+
+// Get EW GWLB IP in AZ1 (used as GENEVE remote-ip)
+data "aws_network_interface" "ew_gwlb_ip_az1" {
+  filter {
+    name   = "description"
+    values = ["ELB gwy/${aws_lb.ew_gateway_lb.name}/*"]
+  }
+  filter {
+    name   = "subnet-id"
+    values = [aws_subnet.ew_privatesubnetaz1.id]
+  }
+}
+
+// Get EW GWLB IP in AZ2 (used as GENEVE remote-ip)
+data "aws_network_interface" "ew_gwlb_ip_az2" {
+  filter {
+    name   = "description"
+    values = ["ELB gwy/${aws_lb.ew_gateway_lb.name}/*"]
+  }
+  filter {
+    name   = "subnet-id"
+    values = [aws_subnet.ew_privatesubnetaz2.id]
+  }
+}
